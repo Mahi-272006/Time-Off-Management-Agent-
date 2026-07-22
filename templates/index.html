@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TimeOffBot</title>
+<link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
+</head>
+<body>
+<div class="app">
+  <input
+    type="hidden"
+    id="employeeId"
+    value="EMP001">
+ 
+  <!-- ================= LEFT SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">📅</div>
+      <div class="brand-text">
+        <h1>TimeOffBot</h1>
+        <p>Your time off, sorted.</p>
+      </div>
+    </div>
+ 
+    <button class="new-convo-btn">
+      <span class="plus">+</span> New Conversation
+    </button>
+ 
+    <div class="convo-section-label">CONVERSATIONS</div>
+ 
+    <div class="convo-list">
+      <div class="convo-item active">
+        <div class="convo-icon">💬</div>
+        <div class="convo-content">
+          <div class="convo-top">
+            <span class="convo-title">Annual leave balance</span>
+            <span class="convo-time">2:34 PM</span>
+          </div>
+          <div class="convo-preview">How many annual leaves do I have?</div>
+        </div>
+      </div>
+ 
+      <div class="convo-item">
+        <div class="convo-icon">💬</div>
+        <div class="convo-content">
+          <div class="convo-top">
+            <span class="convo-title">Parental leave policy</span>
+            <span class="convo-time">2:18 PM</span>
+          </div>
+          <div class="convo-preview">What is the parental leave policy?</div>
+        </div>
+      </div>
+ 
+      <div class="convo-item">
+        <div class="convo-icon">💬</div>
+        <div class="convo-content">
+          <div class="convo-top">
+            <span class="convo-title">Sick leave eligibility</span>
+            <span class="convo-time">Yesterday</span>
+          </div>
+          <div class="convo-preview">Am I eligible for sick leave?</div>
+        </div>
+      </div>
+ 
+      <div class="convo-item">
+        <div class="convo-icon">💬</div>
+        <div class="convo-content">
+          <div class="convo-top">
+            <span class="convo-title">Leave request</span>
+            <span class="convo-time">Yesterday</span>
+          </div>
+          <div class="convo-preview">Book leave from Aug 10 to Aug 12</div>
+        </div>
+      </div>
+ 
+      <div class="convo-item">
+        <div class="convo-icon">💬</div>
+        <div class="convo-content">
+          <div class="convo-top">
+            <span class="convo-title">Blackout dates</span>
+            <span class="convo-time">2 days ago</span>
+          </div>
+          <div class="convo-preview">Are there any blackout dates in July?</div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="user-footer">
+      <div class="user-avatar">EM</div>
+      <div class="user-info">
+        <div class="user-id">EMP001</div>
+        <div class="user-name">Riya Sharma</div>
+      </div>
+      <div class="user-chevron">⌄</div>
+    </div>
+  </aside>
+ 
+  <!-- ================= CENTER CHAT ================= -->
+  <main class="chat-panel">
+    <header class="chat-header">
+      <div class="employee-info">
+        <div class="employee-avatar">👤</div>
+        <div>
+          <div class="employee-label">Employee</div>
+          <div class="employee-name">EMP001 &middot; Riya Sharma <span class="chevron">⌄</span></div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="clear-chat-btn">🗑 Clear Chat</button>
+        <div class="status-pill"><span class="status-dot"></span> Online</div>
+      </div>
+    </header>
+ 
+    <div class="chat-messages" id="chatMessages">
+      
+    </div>
+ 
+    <div class="quick-actions">
+      <button>📅 Check balance</button>
+      <button>📝 Request leave</button>
+      <button>📄 Policy search</button>
+      <button>☰ My requests</button>
+    </div>
+ 
+    <div class="chat-input-bar">
+      <input type="text" id="messageInput" placeholder="Type your message...">
+      <button class="icon-btn">📎</button>
+      <button class="icon-btn">🎤</button>
+      <button class="send-btn" id="sendBtn">➤</button>
+    </div>
+    <div class="input-hint">Press Enter to send &middot; Shift + Enter for new line</div>
+  </main>
+ 
+  <!-- ================= RIGHT PANEL ================= -->
+  <aside class="right-panel">
+    <h2>Quick Info</h2>
+ 
+    <div class="info-card">
+      <div class="info-card-icon">📅</div>
+      <div>
+        <div class="info-card-title">Annual Leave Balance</div>
+        <div class="info-card-value">14.0 days available</div>
+      </div>
+    </div>
+ 
+    <div class="info-card">
+      <div class="info-card-icon">⏳</div>
+      <div>
+        <div class="info-card-title">Pending Requests</div>
+        <div class="info-card-value">1 request</div>
+      </div>
+    </div>
+ 
+    <div class="info-card">
+      <div class="info-card-icon">🎁</div>
+      <div>
+        <div class="info-card-title">Next Holiday</div>
+        <div class="info-card-value">15 Aug 2025</div>
+        <div class="info-card-sub">Independence Day</div>
+      </div>
+    </div>
+ 
+    <div class="need-help">
+      <h3>Need help?</h3>
+      <p>Type your question in the chat. I'll look it up in the company policies and data.</p>
+      <div class="help-illustration">🔍📄</div>
+    </div>
+  </aside>
+ 
+</div>
+ 
+<footer class="app-footer">TimeOffBot v1.0.0 &middot; Acme Corp Internal Use Only</footer>
+ 
+<script src="{{ url_for('static', path='script.js') }}"></script>
+</body>
+</html>
