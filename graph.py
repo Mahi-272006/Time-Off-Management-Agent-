@@ -5,7 +5,6 @@ from state.state import PTOState
 from nodes.context_manager import context_manager_node
 from nodes.load_context import load_context_node
 from nodes.planner import planner_node
-from nodes.extract_leave_details import extract_leave_details
 
 from tools.balance_tool import get_balance
 from tools.employee_tool import get_employee
@@ -31,22 +30,11 @@ builder.add_node("load_context", load_context_node)
 builder.add_node("planner", planner_node)
 builder.add_node("tools", ToolNode(tools))
 builder.add_node("context_manager", context_manager_node)
-builder.add_node(
-    "extract_leave_details",
-    extract_leave_details
-)
+
 
 builder.add_edge(START, "load_context")
 builder.add_edge("load_context", "context_manager")
-builder.add_edge(
-    "context_manager",
-    "extract_leave_details"
-)
-
-builder.add_edge(
-    "extract_leave_details",
-    "planner"
-)
+builder.add_edge("context_manager","planner")
 
 builder.add_conditional_edges(
     "planner",

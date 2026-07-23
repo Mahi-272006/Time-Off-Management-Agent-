@@ -3,13 +3,6 @@ from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage
 
 
-class PendingLeave(TypedDict):
-    leave_type: str | None
-    start_date: str | None
-    end_date: str | None
-    reason: str | None
-
-
 class PTOState(TypedDict):
     # Conversation history
     messages: Annotated[list[BaseMessage], add_messages]
@@ -35,6 +28,3 @@ class PTOState(TypedDict):
 
     # Conversation memory
     summary: str
-
-    # Multi-turn leave request
-    pending_leave: PendingLeave

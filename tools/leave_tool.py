@@ -27,7 +27,12 @@ def check_balance(employee_id, leave_type, required_days):
     if balance is None:
         return False
 
-    key = f"{leave_type.lower()}_leave"
+    key = leave_type.lower().replace(" ", "_")
+
+    print("\n========== BALANCE ==========")
+    print("lookup key :", key)
+    print("required   :", required_days)
+    print("available  :", balance.get(key, 0))
 
     return balance.get(key, 0) >= required_days
 
@@ -116,11 +121,13 @@ def list_leave_requests(employee_id: str):
 
 @tool
 def validate_leave_request(
+    
     employee_id: str,
     leave_type: str,
     start_date: str,
     end_date: str,
 ):
+    
     """
     Validate a leave request before submission.
 
@@ -149,7 +156,11 @@ def validate_leave_request(
 
     Always validate before submitting.
     """
-
+    print("\n========== VALIDATE ==========")
+    print("employee_id :", employee_id)
+    print("leave_type  :", leave_type)
+    print("start_date  :", start_date)
+    print("end_date    :", end_date)
     days = calculate_days(start_date, end_date)
 
     if days <= 0:
