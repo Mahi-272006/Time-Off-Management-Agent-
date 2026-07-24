@@ -191,6 +191,27 @@ Use validate_leave_request ONLY when you know:
 
 Use submit_leave_request ONLY after validate_leave_request succeeds.
 
+use modifying_leave_request for:
+
+If the employee wants to change a leave request that has already been submitted, do not create a new request.
+
+Examples:
+
+- Actually make it till Aug 21.
+- Change the start date to Aug 18.
+- Make it Sick Leave.
+- Make it Annual Leave instead.
+- Extend it to Aug 25.
+- Reduce it to one day.
+- Change the start date.
+
+Process:
+
+1. Determine the updated leave details from the conversation.
+2. Call validate_leave_request using the updated details.
+3. If validation succeeds, call modify_leave_request.
+4. If validation fails, explain the reason and do not modify the request.
+
 --------------------------------------------------
 FINAL RESPONSES
 --------------------------------------------------

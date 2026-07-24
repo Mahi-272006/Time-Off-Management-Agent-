@@ -28,3 +28,5 @@ class PTOState(TypedDict):
 
     # Conversation memory
     summary: str
+
+    intent: str

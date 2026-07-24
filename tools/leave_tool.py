@@ -37,7 +37,7 @@ def check_balance(employee_id, leave_type, required_days):
     return balance.get(key, 0) >= required_days
 
 
-def check_overlap(employee_id, start_date, end_date):
+def check_overlap(employee_id, start_date, end_date,ignore_request_id):
 
     with open("data/requests.json", "r") as f:
         requests = json.load(f)
@@ -45,6 +45,9 @@ def check_overlap(employee_id, start_date, end_date):
     for req in requests:
 
         if req["employee_id"] != employee_id:
+            continue
+
+        if (ignore_request_id is not None and req["request_id"] == ignore_request_id):
             continue
 
         if req["status"] == "Rejected":
@@ -121,11 +124,11 @@ def list_leave_requests(employee_id: str):
 
 @tool
 def validate_leave_request(
-    
     employee_id: str,
     leave_type: str,
     start_date: str,
     end_date: str,
+    ignore_request_id: int = None,
 ):
     
     """
@@ -177,7 +180,7 @@ def validate_leave_request(
             "next_action": "stop"
         }
 
-    if check_overlap(employee_id, start_date, end_date):
+    if check_overlap(employee_id, start_date, end_date, ignore_request_id):
         return {
             "valid": False,
             "reason": "Leave overlaps with an existing request.",
@@ -250,4 +253,64 @@ def submit_leave_request(
         "success": True,
         "request_id": request["request_id"],
         "status": "Pending"
+    }
+
+# ---------------------------------------------------
+# Tool 4
+# ---------------------------------------------------
+
+@tool
+def modify_leave_request(
+    request_id: int,
+    leave_type: str = None,
+    start_date: str = None,
+    end_date: str = None,
+):
+    """
+    Modify an existing leave request.
+
+    Use ONLY after validate_leave_request succeeds.
+
+    Planner must provide the request_id of the request
+    being modified.
+    """
+
+    with open("data/requests.json", "r") as f:
+        requests = json.load(f)
+
+    request = None
+
+    for req in requests:
+        if req["request_id"] == request_id:
+            request = req
+            break
+
+    if request is None:
+        return {
+            "success": False,
+            "message": "Leave request not found."
+        }
+
+    if leave_type is not None:
+        request["leave_type"] = leave_type
+
+    if start_date is not None:
+        request["start_date"] = start_date
+
+    if end_date is not None:
+        request["end_date"] = end_date
+
+    request["days"] = calculate_days(
+        request["start_date"],
+        request["end_date"]
+    )
+
+    with open("data/requests.json", "w") as f:
+        json.dump(requests, f, indent=4)
+
+    return {
+        "success": True,
+        "message": "Leave request updated successfully.",
+        "request_id": request["request_id"],
+        "updated_request": request,
     }
