@@ -50,7 +50,7 @@ def check_overlap(employee_id, start_date, end_date,ignore_request_id):
         if (ignore_request_id is not None and req["request_id"] == ignore_request_id):
             continue
 
-        if req["status"] == "Rejected":
+        if req["status"] in ("Rejected", "Cancelled"):
             continue
 
         if not (
@@ -291,6 +291,12 @@ def modify_leave_request(
             "message": "Leave request not found."
         }
 
+    if request["status"] == "Cancelled":
+        return {
+            "success": False,
+            "message": "Cannot modify a cancelled leave request."
+        }
+
     if leave_type is not None:
         request["leave_type"] = leave_type
 
@@ -313,4 +319,48 @@ def modify_leave_request(
         "message": "Leave request updated successfully.",
         "request_id": request["request_id"],
         "updated_request": request,
+    }
+
+@tool
+def cancel_leave_request(request_id: int):
+    """
+    Cancel an existing leave request.
+
+    Use this tool ONLY when the planner has identified
+    the correct request.
+
+    Never delete the request.
+
+    Update its status to "Cancelled".
+    """
+
+    with open("data/requests.json", "r") as f:
+        requests = json.load(f)
+
+    request = next(
+        (r for r in requests if r["request_id"] == request_id),
+        None
+    )
+
+    if request is None:
+        return {
+            "success": False,
+            "message": "Leave request not found."
+        }
+
+    if request["status"] == "Cancelled":
+        return {
+            "success": False,
+            "message": "This leave request has already been cancelled."
+        }
+
+    request["status"] = "Cancelled"
+
+    with open("data/requests.json", "w") as f:
+        json.dump(requests, f, indent=4)
+
+    return {
+        "success": True,
+        "request_id": request_id,
+        "status": "Cancelled"
     }

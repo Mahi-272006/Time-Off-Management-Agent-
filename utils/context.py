@@ -1,20 +1,15 @@
 from langchain_core.messages import SystemMessage
 
 
-MAX_MESSAGES = 10
-
-
 def prepare_messages(system_prompt, state):
     """
-    Returns the messages sent to the LLM.
+    Build the messages sent to the LLM.
 
     Includes:
-    - system prompt
-    - conversation summary (if any)
-    - last few messages
+    - System prompt
+    - Conversation summary (optional)
+    - Trimmed conversation history
     """
-
-    messages = state["messages"]
 
     prompt = [system_prompt]
 
@@ -29,6 +24,6 @@ Conversation Summary:
             )
         )
 
-    prompt.extend(messages[-MAX_MESSAGES:])
+    prompt.extend(state["messages"])
 
     return prompt

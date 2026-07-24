@@ -10,7 +10,8 @@ from tools.leave_tool import (
     list_leave_requests,
     validate_leave_request,
     submit_leave_request,
-    modify_leave_request
+    modify_leave_request,
+    cancel_leave_request
 )
 from tools.policy_tool import search_policy
 
@@ -25,6 +26,7 @@ llm_with_tools = llm.bind_tools(
         submit_leave_request,
         modify_leave_request,
         search_policy,
+        cancel_leave_request,
     ]
 )
 

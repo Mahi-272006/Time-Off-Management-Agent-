@@ -1,21 +1,25 @@
-from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
+from utils.message_trimmer import trim_last_turns
 
-MAX_MESSAGES = 10
+MAX_TURNS = 5
+
 
 def context_manager_node(state):
     """
-    Keep only the most recent messages to avoid
-    sending the entire conversation to the LLM.
+    Keep only the last few complete conversation turns.
     """
 
     messages = state["messages"]
 
-    # Nothing to trim
-    if len(messages) <= MAX_MESSAGES:
-        return {}
+    trimmed = trim_last_turns(
+        messages,
+        max_turns=MAX_TURNS,
+    )
 
-    trimmed_messages = messages[-MAX_MESSAGES:]
+    print("\n========== CONTEXT ==========")
+    print("Messages before:", len(messages))
+    print("Messages after :", len(trimmed))
+    print("=============================\n")
 
     return {
-        "messages": trimmed_messages
+        "messages": trimmed
     }
