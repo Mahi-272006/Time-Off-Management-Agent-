@@ -1,6 +1,6 @@
 def route_after_intent(state):
 
-    if state["intent"] == "AMBIGUOUS":
-        return "clarify"
+    if state["can_proceed"]:
+        return "planner"
 
-    return "planner"
+    return "clarify"

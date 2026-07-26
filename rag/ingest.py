@@ -23,7 +23,9 @@ splitter = MarkdownHeaderTextSplitter(
 chunks = []
 
 for doc in documents:
-    chunks.extend(splitter.split_text(doc.page_content))
+    split_docs = splitter.split_text(doc.page_content)
+
+    chunks.extend(split_docs)
 
 embedding = SentenceTransformerEmbeddings(
     model_name="all-MiniLM-L6-v2"

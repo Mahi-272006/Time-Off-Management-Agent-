@@ -32,16 +32,6 @@ llm_with_tools = llm.bind_tools(
 
 
 def planner_node(state):
-    """
-    Main reasoning node.
-
-    Responsibilities:
-    - Understand the user's intent.
-    - Decide whether tools are needed.
-    - Decide which tool to call.
-    - Ask follow-up questions when information is missing.
-    - Continue multi-turn conversations naturally.
-    """
 
     employee = state["employee"]
 
@@ -49,8 +39,8 @@ def planner_node(state):
         content=f"""
 Employee Information
 
-Employee ID: {state['employee_id']}
-Employee Name: {employee['name']}
+employee_id: {employee['employee_id']}
+Name: {employee['name']}
 Country: {employee['country']}
 Department: {employee['department']}
 
@@ -61,6 +51,10 @@ Department: {employee['department']}
     prompt = prepare_messages(system_prompt, state)
 
     response = llm_with_tools.invoke(prompt)
+
+    print("=" * 60)
+    print(response.tool_calls)
+    print("=" * 60)
 
     return {
         "messages": [response]

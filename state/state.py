@@ -30,3 +30,6 @@ class PTOState(TypedDict):
     summary: str
 
     intent: str
+
+    can_proceed: bool
+

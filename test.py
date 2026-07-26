@@ -108,23 +108,7 @@ print("=" * 70)
 
 # ---------- TEST 17 : Long Conversation ----------
 test_cases = [
-    "Hi",
-    "Show my balance",
-    "Show my leave history",
-    "Can I carry forward annual leave?",
-    "Take annual leave on 10 Sep.",
-    "10 Sep.",
-    "Actually make it two days.",
-    "Show my balance.",
-    "Cancel it.",
-    "Show my leave history.",
-    "Hi again.",
-    "Take sick leave tomorrow.",
-    "Tomorrow only.",
-    "Actually change it to next Monday.",
-    "Show my balance.",
-    "Can I carry forward leave?",
-    "Show my leave history."
+    "I want to take leave day after tomorrow",
 ]
 
 # ============================================================

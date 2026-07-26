@@ -3,7 +3,7 @@ from rag.retriever import retriever
 
 
 @tool
-def search_policy(query: str) -> str:
+def search_policy(query: str,country: str) -> str:
     """
     Search Acme Corp's PTO policy documents.
 
@@ -30,6 +30,13 @@ def search_policy(query: str) -> str:
     Never answer policy questions from memory.
     If no relevant policy is found, explain that no policy
     information was retrieved instead of making up an answer.
+    """
+
+    search_query = f"""
+    Country: {country}
+
+    Question:
+    {query}
     """
 
     docs = retriever.invoke(query)

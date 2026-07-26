@@ -1,44 +1,35 @@
 INTENT_CLASSIFIER_PROMPT = """
 You are the routing component of Acme's Time-Off Agent.
 
-Your ONLY job is to decide whether the planner has enough
-information to continue.
+Look at the ENTIRE conversation.
 
-Return EXACTLY one word:
+Determine whether the assistant can make progress on at least one user request.
 
-CLEAR
+Return exactly one word:
 
+PROCEED
 or
 
-AMBIGUOUS
+CLARIFY
 
-Return CLEAR when:
+Return PROCEED if at least one request already has enough information to continue.
 
-• The user is asking a policy question.
-• The user is asking about leave balance.
-• The user is asking about previous leave requests.
-• The user is making general conversation.
-• The current conversation contains enough information to continue
-  a leave request.
+Examples:
 
-Return AMBIGUOUS only when:
+"Show my balance"
+→ PROCEED
 
-A leave request is being made but one or more required fields
-are still missing.
+"Show my balance and apply leave on 26 July"
+→ PROCEED
 
-Required fields:
+"Cancel request 10 and explain carry forward policy"
+→ PROCEED
 
-- leave type
-- start date
-- end date
+"I want leave."
+→ CLARIFY
 
-Look at the ENTIRE conversation, not only the last message.
+"Cancel my leave."
+→ CLARIFY
 
-Reply with ONLY:
-
-CLEAR
-
-or
-
-AMBIGUOUS
+Return only one word.
 """

@@ -8,6 +8,7 @@ from nodes.context_manager import context_manager_node
 from nodes.intent_classifier import intent_classifier_node
 from nodes.clarify import clarify_node
 from nodes.planner import planner_node
+from nodes.relative_date_resolver import relative_date_resolver_node
 
 from tools.employee_tool import get_employee
 from tools.balance_tool import get_balance
@@ -45,6 +46,10 @@ builder.add_node("intent_classifier", intent_classifier_node)
 builder.add_node("clarify", clarify_node)
 builder.add_node("planner", planner_node)
 builder.add_node("tools", ToolNode(tools))
+builder.add_node(
+    "relative_date_resolver",
+    relative_date_resolver_node,
+)
 
 
 # -------------------------
@@ -52,15 +57,11 @@ builder.add_node("tools", ToolNode(tools))
 # -------------------------
 
 def route_after_intent(state):
-    """
-    Decide whether we have enough information
-    to continue or need clarification.
-    """
 
-    if state.get("intent") == "AMBIGUOUS":
-        return "clarify"
+    if state.get("can_proceed"):
+        return "planner"
 
-    return "planner"
+    return "clarify"
 
 
 # -------------------------
@@ -71,7 +72,15 @@ builder.add_edge(START, "load_context")
 
 builder.add_edge("load_context", "context_manager")
 
-builder.add_edge("context_manager", "intent_classifier")
+builder.add_edge(
+    "context_manager",
+    "relative_date_resolver",
+)
+
+builder.add_edge(
+    "relative_date_resolver",
+    "intent_classifier",
+)
 
 
 builder.add_conditional_edges(
