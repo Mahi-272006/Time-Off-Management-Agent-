@@ -9,130 +9,189 @@ state = {
 print("=" * 70)
 print("Acme Time-Off Agent")
 print("=" * 70)
+print("Type 'exit' to quit.")
 
-# ============================================================
-# TEST SUITES
-# Uncomment ONE suite at a time.
-# ============================================================
+# ==========================================================
+# Choose ONE test suite by uncommenting it
+# ==========================================================
 
-# ---------- TEST 1 : Normal Leave Request ----------
+# ---------- 1. Greeting ----------
 # test_cases = [
-#     "Take annual leave from 10 Sep to 12 Sep."
+#     "Hi"
 # ]
 
-# ---------- TEST 2 : Missing Information ----------
+# ---------- 2. Balance ----------
 # test_cases = [
-#     "I want a leave.",
-#     "Annual leave",
-#     "10 Sep to 12 Sep"
+#     "Show my leave balance"
 # ]
 
-# ---------- TEST 3 : Vacation Normalization ----------
+# ---------- 3. Leave History ----------
 # test_cases = [
-#     "Take vacation leave on 15 Aug."
+#     "Show my leave history"
 # ]
 
-# ---------- TEST 4 : Balance ----------
+# ---------- 4. Annual Leave Policy ----------
 # test_cases = [
-#     "How many sick leaves do I have?"
+#     "What is the annual leave policy?"
 # ]
 
-# ---------- TEST 5 : Policy ----------
+# ---------- 5. Sick Leave Policy ----------
 # test_cases = [
-#     "Can I carry forward annual leave?"
+#     "Explain the sick leave policy"
 # ]
 
-# ---------- TEST 6 : Leave History ----------
+# ---------- 6. Parental Leave Policy ----------
 # test_cases = [
-#     "Show my leave history."
+#     "Tell me about parental leave"
 # ]
 
-# ---------- TEST 7 : Modify Latest Leave ----------
+# ---------- 7. All Policies ----------
 # test_cases = [
-#     "Take sick leave on 27 Aug.",
-#     "27 Aug itself.",
-#     "Actually change it to 29 Aug."
+#     "Explain all leave policies"
 # ]
 
-# ---------- TEST 8 : Modify by Request ID ----------
+# ---------- 8. Relative Date ----------
 # test_cases = [
-#     "Change request id 11.",
-#     "Start date should be 5 Nov."
+#     "Take annual leave tomorrow"
 # ]
 
-# ---------- TEST 9 : Modify by Start Date ----------
+# ---------- 9. Missing Leave Type ----------
 # test_cases = [
-#     "Modify the leave whose start date is 22 July 2025.",
-#     "Change end date to 22 July.",
-#     "Yes."
+#     "Take leave tomorrow"
 # ]
 
-# ---------- TEST 10 : Overlap ----------
+# ---------- 10. Missing Date ----------
 # test_cases = [
-#     "Change request id 12.",
-#     "Start date should be 6 Nov."
+#     "Take sick leave"
 # ]
 
-# ---------- TEST 11 : Cancel Latest ----------
+# ---------- 11. Multi-Day Leave ----------
 # test_cases = [
-#     "Take sick leave on 27 Aug.",
-#     "27 Aug.",
-#     "Actually cancel it."
+#     "Take annual leave from 10 August to 14 August"
 # ]
 
-# ---------- TEST 12 : Cancel by ID ----------
+# ---------- 12. Multi-Intent ----------
 # test_cases = [
-#     "Cancel request id 11."
+#     "Show my balance and take sick leave tomorrow"
 # ]
 
-# ---------- TEST 13 : Cancel Multiple ----------
+# ---------- 13. Multi-Intent ----------
 # test_cases = [
-#     "Cancel request id 13 and 14."
+#     "Show my leave history and explain sick leave policy"
 # ]
 
-# ---------- TEST 14 : Ambiguous Cancel ----------
+# ---------- 14. Modify Leave ----------
 # test_cases = [
-#     "Cancel my leave.",
-#     "5"
+#     "Take annual leave tomorrow",
+#     "Actually make it Friday"
 # ]
 
-# ---------- TEST 15 : Multi Intent ----------
+# ---------- 15. Modify Leave Type ----------
 # test_cases = [
-#     "Take annual leave on 15 Aug and also tell me my balance."
+#     "Take annual leave tomorrow",
+#     "Actually make it sick leave"
 # ]
 
-# ---------- TEST 16 : Policy + Leave ----------
+# ---------- 16. Extend Leave ----------
 # test_cases = [
-#     "Can I carry forward leave? Also take annual leave on 20 Aug."
+#     "Take annual leave tomorrow",
+#     "Extend it by two days"
 # ]
 
-# ---------- TEST 17 : Long Conversation ----------
+# ---------- 17. Cancel by ID ----------
+# test_cases = [
+#     "Cancel request 2"
+# ]
+
+# ---------- 18. Cancel by Conversation ----------
+# test_cases = [
+#     "Take annual leave tomorrow",
+#     "Cancel it"
+# ]
+
+# ---------- 19. Pronoun Resolution ----------
+# test_cases = [
+#     "Take sick leave tomorrow",
+#     "Move it to Friday"
+# ]
+
+# ---------- 20. Synonyms ----------
+# test_cases = [
+#     "Take PTO tomorrow"
+# ]
+
+# ---------- 21. Medical Leave Synonym ----------
+# test_cases = [
+#     "I need medical leave tomorrow"
+# ]
+
+# ---------- 22. Full End-to-End Conversation ----------
 test_cases = [
-    "I want to take leave day after tomorrow",
+   "Hi",
+   "What are all my leave policies?",
+   "Show my balance",
+    "Take annual leave tomorrow",
+    "Actually make it Friday",
+    "Show my leave history",
+    "Cancel it",
+    "Show my leave history"
 ]
 
-# ============================================================
+# ---------- Interactive Mode ----------
+#test_cases = None
 
-for user_input in test_cases:
+# ==========================================================
 
-    print("\nUSER:", user_input)
+if test_cases is None:
 
-    state["messages"].append(
-        {
-            "role": "user",
-            "content": user_input
-        }
-    )
+    while True:
 
-    state = graph.invoke(state)
+        user_input = input("\nUSER: ")
 
-    print("\nBOT:")
+        if user_input.lower() in ["exit", "quit"]:
+            print("\nConversation Finished.")
+            break
 
-    last_message = state["messages"][-1]
+        state["messages"].append(
+            {
+                "role": "user",
+                "content": user_input
+            }
+        )
 
-    if hasattr(last_message, "content"):
-        print(last_message.content)
-    else:
-        print(last_message)
+        state = graph.invoke(state)
 
-print("\nConversation Finished.")
+        print("\nBOT:")
+
+        last_message = state["messages"][-1]
+
+        if hasattr(last_message, "content"):
+            print(last_message.content)
+        else:
+            print(last_message)
+
+else:
+
+    for user_input in test_cases:
+
+        print("\nUSER:", user_input)
+
+        state["messages"].append(
+            {
+                "role": "user",
+                "content": user_input
+            }
+        )
+
+        state = graph.invoke(state)
+
+        print("\nBOT:")
+
+        last_message = state["messages"][-1]
+
+        if hasattr(last_message, "content"):
+            print(last_message.content)
+        else:
+            print(last_message)
+
+    print("\nConversation Finished.")

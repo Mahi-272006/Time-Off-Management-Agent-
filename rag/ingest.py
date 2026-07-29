@@ -23,9 +23,23 @@ splitter = MarkdownHeaderTextSplitter(
 chunks = []
 
 for doc in documents:
+
     split_docs = splitter.split_text(doc.page_content)
 
-    chunks.extend(split_docs)
+    for chunk in split_docs:
+
+        title = chunk.metadata.get("title", "")
+        section = chunk.metadata.get("section", "")
+
+        # Add metadata into the text itself
+        chunk.page_content = f"""
+Policy: {title}
+Country: {section}
+
+{chunk.page_content}
+""".strip()
+
+        chunks.append(chunk)
 
 embedding = SentenceTransformerEmbeddings(
     model_name="all-MiniLM-L6-v2"

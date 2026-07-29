@@ -1,5 +1,6 @@
 from langchain_core.tools import tool
 from rag.retriever import retriever
+import re
 
 
 @tool
@@ -39,9 +40,18 @@ def search_policy(query: str,country: str) -> str:
     {query}
     """
 
-    docs = retriever.invoke(query)
+    docs = retriever.invoke(search_query)
 
-    return "\n\n".join(
-        doc.page_content
-        for doc in docs
-    )
+    print("=" * 80)
+    print("Retrieved docs:", len(docs))
+    print("=" * 80)
+
+    for i, doc in enumerate(docs):
+        print(f"\n----- DOC {i+1} -----")
+        print(doc.page_content)
+        print("-" * 80)
+
+    if not docs:
+        return "No relevant policy found."
+
+    return "\n\n".join(doc.page_content for doc in docs)
