@@ -50,11 +50,29 @@ Department: {employee['department']}
 
     prompt = prepare_messages(system_prompt, state)
 
+    print("\n" + "=" * 100)
+    print("PROMPT SENT TO CLAUDE")
+    print("=" * 100)
+
+    for i, msg in enumerate(prompt):
+        print(f"\n[{i}] {type(msg).__name__}")
+
+        if hasattr(msg, "tool_call_id"):
+            print("Tool Call ID:", msg.tool_call_id)
+
+        print(msg.content)
+
+    print("=" * 100)
     response = llm_with_tools.invoke(prompt)
 
-    print("=" * 60)
+    response = llm_with_tools.invoke(prompt)
+
+    print("\n========================")
+    print("CONTENT:")
+    print(response.content)
+    print("TOOL CALLS:")
     print(response.tool_calls)
-    print("=" * 60)
+    print("========================")
 
     return {
         "messages": [response]

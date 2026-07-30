@@ -126,7 +126,7 @@ print("Type 'exit' to quit.")
 # ]
 
 # ---------- 22. Full End-to-End Conversation ----------
-test_cases = [
+'''test_cases = [
    "Hi",
    "What are all my leave policies?",
    "Show my balance",
@@ -135,10 +135,10 @@ test_cases = [
     "Show my leave history",
     "Cancel it",
     "Show my leave history"
-]
+]'''
 
 # ---------- Interactive Mode ----------
-#test_cases = None
+test_cases = None
 
 # ==========================================================
 
