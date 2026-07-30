@@ -1,6 +1,5 @@
 from utils.message_trimmer import trim_last_turns
-
-MAX_TURNS = 5
+MAX_TURNS = 8
 
 
 def context_manager_node(state):

@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 from langchain_core.tools import tool
-
+from utils.paths import DATA_DIR
 
 # ---------------------------------------------------
 # Helper Functions
@@ -16,7 +16,7 @@ def calculate_days(start_date: str, end_date: str) -> int:
 
 def check_balance(employee_id, leave_type, required_days):
 
-    with open("data/balances.json", "r") as f:
+    with open(DATA_DIR / "balances.json", "r") as f:
         balances = json.load(f)
 
     balance = next(
@@ -39,7 +39,7 @@ def check_balance(employee_id, leave_type, required_days):
 
 def check_overlap(employee_id, start_date, end_date,ignore_request_id):
 
-    with open("data/requests.json", "r") as f:
+    with open(DATA_DIR / "requests.json", "r") as f:
         requests = json.load(f)
 
     for req in requests:
@@ -98,7 +98,7 @@ def list_leave_requests(employee_id: str):
     Never invent leave history.
     """
 
-    with open("data/requests.json", "r") as f:
+    with open(DATA_DIR / "requests.json", "r") as f:
         requests = json.load(f)
 
     employee_requests = [
@@ -231,7 +231,7 @@ def submit_leave_request(
     If validation fails, explain the failure instead of submitting.
     """
 
-    with open("data/requests.json", "r") as f:
+    with open(DATA_DIR / "requests.json", "r") as f:
         requests = json.load(f)
 
     request = {
@@ -246,7 +246,7 @@ def submit_leave_request(
 
     requests.append(request)
 
-    with open("data/requests.json", "w") as f:
+    with open(DATA_DIR / "requests.json", "w") as f:
         json.dump(requests, f, indent=4)
 
     return {
@@ -275,7 +275,7 @@ def modify_leave_request(
     being modified.
     """
 
-    with open("data/requests.json", "r") as f:
+    with open(DATA_DIR /"requests.json", "r") as f:
         requests = json.load(f)
 
     request = None
@@ -311,7 +311,7 @@ def modify_leave_request(
         request["end_date"]
     )
 
-    with open("data/requests.json", "w") as f:
+    with open(DATA_DIR / "requests.json", "w") as f:
         json.dump(requests, f, indent=4)
 
     return {
@@ -334,7 +334,7 @@ def cancel_leave_request(request_id: int):
     Update its status to "Cancelled".
     """
 
-    with open("data/requests.json", "r") as f:
+    with open(DATA_DIR / "requests.json", "r") as f:
         requests = json.load(f)
 
     request = next(
@@ -356,7 +356,7 @@ def cancel_leave_request(request_id: int):
 
     request["status"] = "Cancelled"
 
-    with open("data/requests.json", "w") as f:
+    with open(DATA_DIR /"requests.json", "w") as f:
         json.dump(requests, f, indent=4)
 
     return {

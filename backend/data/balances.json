@@ -1,0 +1,14 @@
+[
+    {
+        "employee_id": "EMP001",
+        "annual_leave": 14,
+        "sick_leave": 8,
+        "parental_leave": 90
+    },
+    {
+        "employee_id": "EMP002",
+        "annual_leave": 18,
+        "sick_leave": 10,
+        "parental_leave": 90
+    }
+]

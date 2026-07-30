@@ -1,6 +1,6 @@
 import json
 from langchain_core.tools import tool
-
+from utils.paths import DATA_DIR
 
 @tool
 def get_employee(employee_id: str) -> dict:
@@ -21,7 +21,7 @@ def get_employee(employee_id: str) -> dict:
     leave requests, or company policy questions.
     """
 
-    with open("data/employees.json", "r") as f:
+    with open(DATA_DIR / "employees.json", "r") as f:
         employees = json.load(f)
 
     for employee in employees:

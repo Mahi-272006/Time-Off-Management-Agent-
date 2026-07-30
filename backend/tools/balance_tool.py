@@ -1,6 +1,6 @@
 import json
 from langchain_core.tools import tool
-
+from utils.paths import DATA_DIR
 
 @tool
 def get_balance(employee_id: str) -> dict:
@@ -25,7 +25,7 @@ def get_balance(employee_id: str) -> dict:
     Always use this tool for balance-related questions.
     """
 
-    with open("data/balances.json", "r") as f:
+    with open(DATA_DIR / "balances.json", "r", encoding="utf-8") as f:
         balances = json.load(f)
 
     for balance in balances:

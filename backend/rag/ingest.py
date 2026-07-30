@@ -2,9 +2,10 @@ from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import MarkdownHeaderTextSplitter
 from langchain_chroma import Chroma
 from langchain_community.embeddings import SentenceTransformerEmbeddings
+from utils.paths import DATA_DIR, BACKEND_DIR
 
 loader = DirectoryLoader(
-    "data/policies",
+    DATA_DIR/"policies",
     glob="*.md",
     loader_cls=TextLoader
 )
@@ -29,12 +30,14 @@ for doc in documents:
     for chunk in split_docs:
 
         title = chunk.metadata.get("title", "")
-        section = chunk.metadata.get("section", "")
+        country = chunk.metadata.get("section", "")
 
-        # Add metadata into the text itself
+        chunk.metadata["country"] = country
+        chunk.metadata["policy_type"] = title
+
         chunk.page_content = f"""
 Policy: {title}
-Country: {section}
+Country: {country}
 
 {chunk.page_content}
 """.strip()
@@ -48,7 +51,7 @@ embedding = SentenceTransformerEmbeddings(
 Chroma.from_documents(
     documents=chunks,
     embedding=embedding,
-    persist_directory="rag/chroma_db"
+    persist_directory=str(BACKEND_DIR / "rag" / "chroma_db")
 )
 
 print(f"Stored {len(chunks)} chunks.")

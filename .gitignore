@@ -1,44 +1,93 @@
-# ==========================
+# ==========================================
 # Python
-# ==========================
+# ==========================================
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 
-# Virtual Environment
+# Virtual environments
 venv/
 .venv/
 env/
 
-# Environment Variables
+# ==========================================
+# Environment variables / secrets
+# ==========================================
 .env
-.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# IDE
+# Keep example env files
+!.env.example
+!.env.template
+
+# ==========================================
+# IDE / Editor
+# ==========================================
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# OS Files
+# ==========================================
+# OS files
+# ==========================================
 .DS_Store
 Thumbs.db
+desktop.ini
 
+# ==========================================
 # Logs
+# ==========================================
 *.log
 
-# Cache
+# ==========================================
+# Python caches / testing
+# ==========================================
 .pytest_cache/
 .mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
 
-# ChromaDB Vector Store
-rag/chroma_db/
+# ==========================================
+# Chroma / vector database
+# ==========================================
+backend/rag/chroma_db/
+**/chroma_db/
 
-# Database
+# ==========================================
+# Databases
+# ==========================================
 *.db
+*.sqlite
 *.sqlite3
 
-# Temporary
+# ==========================================
+# Temporary files
+# ==========================================
 *.tmp
+*.temp
 
-# Ignore data folder
-data/
+# ==========================================
+# Node / React
+# ==========================================
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==========================================
+# Build / cache
+# ==========================================
+*.egg-info/
+build/
+dist/

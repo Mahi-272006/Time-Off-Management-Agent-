@@ -9,8 +9,7 @@ from pydantic import BaseModel
 
 from langchain_core.messages import HumanMessage
 
-from graph import graph
-from employee_db import authenticate
+from backend.graph import graph
 
 # =====================================================
 # FastAPI App
@@ -68,31 +67,6 @@ async def login_page(request: Request):
 
 # =====================================================
 # Login API
-# =====================================================
-
-@app.post("/login")
-async def login(req: LoginRequest, request: Request):
-
-    employee = authenticate(
-        req.employee_id,
-        req.password
-    )
-
-    if employee is None:
-
-        return JSONResponse(
-            {
-                "success": False,
-                "message": "Invalid Employee ID or Password"
-            },
-            status_code=401
-        )
-
-    request.session["employee"] = employee
-
-    return {
-        "success": True
-    }
 
 
 # =====================================================
