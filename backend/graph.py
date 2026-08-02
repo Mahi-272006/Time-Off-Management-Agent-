@@ -9,8 +9,7 @@ from nodes.intent_classifier import intent_classifier_node
 from nodes.clarify import clarify_node
 from nodes.planner import planner_node
 from nodes.relative_date_resolver import relative_date_resolver_node
-
-from tools.employee_tool import get_employee
+from tools.suggest_leave_tool import suggest_leave_dates
 from tools.balance_tool import get_balance
 from tools.leave_tool import (
     list_leave_requests,
@@ -23,7 +22,6 @@ from tools.policy_tool import search_policy
 
 
 tools = [
-    get_employee,
     get_balance,
     list_leave_requests,
     validate_leave_request,
@@ -31,6 +29,7 @@ tools = [
     modify_leave_request, 
     cancel_leave_request, 
     search_policy,
+    suggest_leave_dates
 ]
 
 

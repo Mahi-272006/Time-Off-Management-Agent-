@@ -7,14 +7,15 @@ from langchain_core.messages import HumanMessage
 
 def relative_date_resolver_node(state):
     """
-    Converts relative dates like:
-    - tomorrow
-    - today
-    - next Monday
-    - this Friday
-    - in 3 days
+    Resolves relative dates like:
+        - today
+        - tomorrow
+        - day after tomorrow
+        - next Monday
+        - this Friday
+        - in 3 days
 
-    into absolute dates before the planner sees them.
+    into absolute dates before the planner sees the message.
     """
 
     messages = state["messages"]
@@ -29,14 +30,10 @@ def relative_date_resolver_node(state):
 
     text = last.content
 
-    base = datetime.now()
-
     settings = {
-        "RELATIVE_BASE": base,
+        "RELATIVE_BASE": datetime.now(),
         "PREFER_DATES_FROM": "future",
     }
-
-    replacements = {}
 
     patterns = [
         r"day after tomorrow",
@@ -48,9 +45,13 @@ def relative_date_resolver_node(state):
         r"in\s+\d+\s+days?",
     ]
 
+    new_text = text
+
     for pattern in patterns:
 
-        for match in re.finditer(pattern, text, re.IGNORECASE):
+        matches = re.finditer(pattern, text, re.IGNORECASE)
+
+        for match in matches:
 
             phrase = match.group()
 
@@ -60,17 +61,15 @@ def relative_date_resolver_node(state):
             )
 
             if parsed:
-                replacements[phrase] = parsed.strftime("%d %B %Y")
 
-    new_text = text
+                absolute_date = parsed.strftime("%d %B %Y")
 
-    for old, new in replacements.items():
-        new_text = re.sub(
-            re.escape(old),
-            new,
-            new_text,
-            flags=re.IGNORECASE,
-        )
+                new_text = re.sub(
+                    re.escape(phrase),
+                    absolute_date,
+                    new_text,
+                    flags=re.IGNORECASE,
+                )
 
     if new_text != text:
 

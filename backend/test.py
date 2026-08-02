@@ -127,14 +127,16 @@ print("Type 'exit' to quit.")
 
 # ---------- 22. Full End-to-End Conversation ----------
 '''test_cases = [
-   "Hi",
-   "What are all my leave policies?",
-   "Show my balance",
-    "Take annual leave tomorrow",
-    "Actually make it Friday",
-    "Show my leave history",
-    "Cancel it",
-    "Show my leave history"
+    "Take annual leave on 15 September 2026",
+    "Take annual leave on 15 July 2025",
+    "Take annual leave on 16 August 2026",
+    "Take annual leave on 15 August 2026",
+    "Take annual leave from 1 October to 10 October",
+    "Take annual leave from 11 September to 13 September",
+    "Take annual leave from 22 December 2026 to 24 December 2026",
+    "Take annual leave on 31 February 2026",
+    "Take annual leave on 10 September 2026",
+    "Take annual leave from 10 October 2026 to 12 October 2026"
 ]'''
 
 # ---------- Interactive Mode ----------

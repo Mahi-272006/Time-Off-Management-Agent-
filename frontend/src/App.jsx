@@ -57,7 +57,8 @@ function App() {
       }
 
       const data = await response.json();
-
+      console.log("API RESPONSE:", data);
+      
       const assistantMessage = {
         id: Date.now() + 1,
         role: "assistant",

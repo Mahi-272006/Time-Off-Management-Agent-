@@ -2,78 +2,8 @@ import json
 from datetime import datetime
 from langchain_core.tools import tool
 from utils.paths import DATA_DIR
-
-# ---------------------------------------------------
-# Helper Functions
-# ---------------------------------------------------
-
-def calculate_days(start_date: str, end_date: str) -> int:
-    start = datetime.strptime(start_date, "%Y-%m-%d")
-    end = datetime.strptime(end_date, "%Y-%m-%d")
-
-    return (end - start).days + 1
-
-
-def check_balance(employee_id, leave_type, required_days):
-
-    with open(DATA_DIR / "balances.json", "r") as f:
-        balances = json.load(f)
-
-    balance = next(
-        (b for b in balances if b["employee_id"] == employee_id),
-        None
-    )
-
-    if balance is None:
-        return False
-
-    key = leave_type.lower().replace(" ", "_")
-
-    print("\n========== BALANCE ==========")
-    print("lookup key :", key)
-    print("required   :", required_days)
-    print("available  :", balance.get(key, 0))
-
-    return balance.get(key, 0) >= required_days
-
-
-def check_overlap(employee_id, start_date, end_date,ignore_request_id):
-
-    with open(DATA_DIR / "requests.json", "r") as f:
-        requests = json.load(f)
-
-    for req in requests:
-
-        if req["employee_id"] != employee_id:
-            continue
-
-        if (ignore_request_id is not None and req["request_id"] == ignore_request_id):
-            continue
-
-        if req["status"] in ("Rejected", "Cancelled"):
-            continue
-
-        if not (
-            end_date < req["start_date"]
-            or start_date > req["end_date"]
-        ):
-            return True
-
-    return False
-
-
-def check_blackout(start_date, end_date):
-
-    blackout_start = "2026-12-20"
-    blackout_end = "2026-12-31"
-
-    if not (
-        end_date < blackout_start
-        or start_date > blackout_end
-    ):
-        return True
-
-    return False
+from langchain_core.tools import tool
+from tools.validation_leave_request_logic import validate_leave_request_logic,calculate_days
 
 @tool
 def list_leave_requests(employee_id: str):
@@ -98,8 +28,19 @@ def list_leave_requests(employee_id: str):
     Never invent leave history.
     """
 
-    with open(DATA_DIR / "requests.json", "r") as f:
-        requests = json.load(f)
+    try:
+        with open(DATA_DIR / "requests.json", "r") as f:
+            requests = json.load(f)
+
+    except FileNotFoundError:
+        return {
+            "error": "Leave request database is unavailable. Please contact the administrator."
+        }
+
+    except json.JSONDecodeError:
+        return {
+            "error": "Leave request database is corrupted. Please contact the administrator."
+        }
 
     employee_requests = [
         req for req in requests
@@ -117,11 +58,6 @@ def list_leave_requests(employee_id: str):
         "requests": employee_requests
     }
 
-
-# ---------------------------------------------------
-# Tool 2
-# ---------------------------------------------------
-
 @tool
 def validate_leave_request(
     employee_id: str,
@@ -130,75 +66,17 @@ def validate_leave_request(
     end_date: str,
     ignore_request_id: int = None,
 ):
-    
     """
     Validate a leave request before submission.
-
-    Use this tool whenever an employee wants to apply
-    for leave.
-
-    This tool checks:
-
-    - Leave balance
-    - Leave eligibility
-    - Blackout dates
-    - Overlapping leave requests
-    - Company leave rules
-
-    Inputs:
-        Employee ID
-        Leave type
-        Start date
-        End date
-
-    Returns:
-        Whether the leave request is valid,
-        along with the reason if validation fails.
-
-    This tool DOES NOT submit the leave request.
-
-    Always validate before submitting.
     """
-    print("\n========== VALIDATE ==========")
-    print("employee_id :", employee_id)
-    print("leave_type  :", leave_type)
-    print("start_date  :", start_date)
-    print("end_date    :", end_date)
-    days = calculate_days(start_date, end_date)
 
-    if days <= 0:
-        return {
-            "valid": False,
-            "reason": "End date must be after start date.",
-            "next_action": "stop"
-        }
-
-    if not check_balance(employee_id, leave_type, days):
-        return {
-            "valid": False,
-            "reason": "Insufficient leave balance.",
-            "next_action": "stop"
-        }
-
-    if check_overlap(employee_id, start_date, end_date, ignore_request_id):
-        return {
-            "valid": False,
-            "reason": "Leave overlaps with an existing request.",
-            "next_action": "stop"
-        }
-
-    if check_blackout(start_date, end_date):
-        return {
-            "valid": False,
-            "reason": "Requested dates fall in a blackout period.",
-            "next_action": "stop"
-        }
-
-    return {
-        "valid": True,
-        "days": days,
-        "next_action": "submit"
-    }
+    return validate_leave_request_logic(
+        employee_id=employee_id,
+        leave_type=leave_type,
+        start_date=start_date,
+        end_date=end_date,
+        ignore_request_id=ignore_request_id,
+    )
 
 # ---------------------------------------------------
 # Tool 3

@@ -25,8 +25,19 @@ def get_balance(employee_id: str) -> dict:
     Always use this tool for balance-related questions.
     """
 
-    with open(DATA_DIR / "balances.json", "r", encoding="utf-8") as f:
-        balances = json.load(f)
+    try:
+        with open(DATA_DIR / "balances.json", "r", encoding="utf-8") as f:
+            balances = json.load(f)
+
+    except FileNotFoundError:
+        return {
+            "error": "Leave balance database is unavailable. Please contact the administrator."
+        }
+
+    except json.JSONDecodeError:
+        return {
+            "error": "Leave balance database is corrupted. Please contact the administrator."
+        }
 
     for balance in balances:
         if balance["employee_id"] == employee_id:
