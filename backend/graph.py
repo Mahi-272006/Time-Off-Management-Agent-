@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
-
+from langgraph.checkpoint.memory import MemorySaver
 from state.state import PTOState
 
 from nodes.load_context import load_context_node
@@ -9,7 +9,6 @@ from nodes.intent_classifier import intent_classifier_node
 from nodes.clarify import clarify_node
 from nodes.planner import planner_node
 from nodes.relative_date_resolver import relative_date_resolver_node
-from tools.suggest_leave_tool import suggest_leave_dates
 from tools.balance_tool import get_balance
 from tools.leave_tool import (
     list_leave_requests,
@@ -28,8 +27,7 @@ tools = [
     submit_leave_request,
     modify_leave_request, 
     cancel_leave_request, 
-    search_policy,
-    suggest_leave_dates
+    search_policy
 ]
 
 
@@ -49,7 +47,7 @@ builder.add_node(
     "relative_date_resolver",
     relative_date_resolver_node,
 )
-
+memory = MemorySaver()
 
 # -------------------------
 # Routing Functions
@@ -106,4 +104,7 @@ builder.add_conditional_edges(
 builder.add_edge("tools", "planner")
 
 
-graph = builder.compile()
+
+graph = builder.compile(
+    checkpointer=memory
+)

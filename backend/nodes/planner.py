@@ -4,7 +4,6 @@ from datetime import datetime
 from llm import llm
 from prompts.planner_prompt import PLANNER_PROMPT
 from utils.context import prepare_messages
-from tools.suggest_leave_tool import suggest_leave_dates
 from tools.balance_tool import get_balance
 from tools.leave_tool import (
     list_leave_requests,
@@ -25,8 +24,7 @@ llm_with_tools = llm.bind_tools(
         submit_leave_request,
         modify_leave_request,
         search_policy,
-        cancel_leave_request,
-        suggest_leave_dates
+        cancel_leave_request
     ]
 )
 

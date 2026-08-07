@@ -1,45 +1,49 @@
+import sys
+from pathlib import Path
+
+BACKEND_DIR = Path(__file__).resolve().parent
+sys.path.insert(0, str(BACKEND_DIR))
+
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
 from starlette.middleware.sessions import SessionMiddleware
 
 from pydantic import BaseModel
-
 from langchain_core.messages import HumanMessage
 
+from backend.auth import authenticate
 from backend.graph import graph
 
-# =====================================================
-# FastAPI App
-# =====================================================
+app = FastAPI(title="Time-Off Assistant")
 
-app = FastAPI(
-    title="Time-Off Management Agent",
-    version="1.0"
-)
-
-# =====================================================
-# Session Middleware
-# =====================================================
+# -------------------------------
+# Session
+# -------------------------------
 
 app.add_middleware(
     SessionMiddleware,
-    secret_key="your_secret_key_here"   # later move this to .env
+    secret_key="timeoff_secret_key",
 )
 
-# =====================================================
-# Static Files
-# =====================================================
+# -------------------------------
+# Static & Templates
+# -------------------------------
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(
+    "/static",
+    StaticFiles(directory=BACKEND_DIR / "static"),
+    name="static",
+)
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(
+    directory=BACKEND_DIR / "templates"
+)
 
-# =====================================================
-# Request Models
-# =====================================================
+# -------------------------------
+# Models
+# -------------------------------
 
 class LoginRequest(BaseModel):
     employee_id: str
@@ -50,11 +54,11 @@ class ChatRequest(BaseModel):
     message: str
 
 
-# =====================================================
+# -------------------------------
 # Login Page
-# =====================================================
+# -------------------------------
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/")
 async def login_page(request: Request):
 
     return templates.TemplateResponse(
@@ -65,16 +69,37 @@ async def login_page(request: Request):
     )
 
 
-# =====================================================
+# -------------------------------
 # Login API
+# -------------------------------
+
+@app.post("/login")
+async def login(req: LoginRequest, request: Request):
+
+    employee = authenticate(
+        req.employee_id,
+        req.password
+    )
+
+    if employee is None:
+        return {
+            "success": False,
+            "message": "Invalid Employee ID or Password"
+        }
+
+    request.session["employee"] = employee
+
+    return {
+        "success": True
+    }
 
 
-# =====================================================
-# Chat UI
-# =====================================================
+# -------------------------------
+# Chat Page
+# -------------------------------
 
-@app.get("/chat-ui", response_class=HTMLResponse)
-async def chat_ui(request: Request):
+@app.get("/chat")
+async def chat_page(request: Request):
 
     employee = request.session.get("employee")
 
@@ -82,7 +107,7 @@ async def chat_ui(request: Request):
         return RedirectResponse("/")
 
     return templates.TemplateResponse(
-        "index.html",
+        "chat.html",
         {
             "request": request,
             "employee": employee
@@ -90,23 +115,19 @@ async def chat_ui(request: Request):
     )
 
 
-# =====================================================
-# Chat Endpoint
-# =====================================================
+# -------------------------------
+# Chat API
+# -------------------------------
 
-@app.post("/chat")
-async def chat(req: ChatRequest, request: Request):
+@app.post("/ask")
+async def ask(req: ChatRequest, request: Request):
 
     employee = request.session.get("employee")
 
     if employee is None:
-
-        return JSONResponse(
-            {
-                "response": "Please login first."
-            },
-            status_code=401
-        )
+        return {
+            "response": "Please login first."
+        }
 
     state = {
 
@@ -120,18 +141,29 @@ async def chat(req: ChatRequest, request: Request):
 
     }
 
-    result = graph.invoke(state)
+    result = graph.invoke(
+    state,
+    config={
+        "configurable": {
+            "thread_id": employee["employee_id"]
+        }
+    }
+    )
+    print("\n===== STORED MESSAGES =====")
+    for msg in result["messages"]:
+        print(type(msg).__name__, ":", msg.content)
+    print("===========================\n")
 
-    last_message = result["messages"][-1]
+    answer = result["messages"][-1].content
 
     return {
-        "response": last_message.content
+        "response": answer
     }
 
 
-# =====================================================
+# -------------------------------
 # Logout
-# =====================================================
+# -------------------------------
 
 @app.get("/logout")
 async def logout(request: Request):

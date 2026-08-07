@@ -140,8 +140,8 @@ print("Type 'exit' to quit.")
 ]'''
 
 # ---------- Interactive Mode ----------
-test_cases = None
 
+test_cases=None
 # ==========================================================
 
 if test_cases is None:

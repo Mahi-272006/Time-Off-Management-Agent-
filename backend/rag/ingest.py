@@ -1,3 +1,9 @@
+import sys
+from pathlib import Path
+
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(BACKEND_DIR))
+
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain_text_splitters import MarkdownHeaderTextSplitter
 from langchain_chroma import Chroma
@@ -11,6 +17,7 @@ loader = DirectoryLoader(
 )
 
 documents = loader.load()
+print(f"Loaded {len(documents)} markdown files")
 
 headers = [
     ("#", "title"),
@@ -43,6 +50,9 @@ Country: {country}
 """.strip()
 
         chunks.append(chunk)
+        print("=" * 80)
+        print(chunk.metadata)
+        print(chunk.page_content[:300])
 
 embedding = SentenceTransformerEmbeddings(
     model_name="all-MiniLM-L6-v2"

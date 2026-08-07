@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acme Time-Off Assistant</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="chat-container">
+
+        <!-- Header -->
+
+        <header class="chat-header">
+
+            <div>
+                <h2>🤖 Acme Time-Off Assistant</h2>
+
+                <div class="status">
+                    Online
+                </div>
+            </div>
+
+            <div>
+
+                <span class="employee-name">
+                    {{ employee.name }}
+                </span>
+
+                <button
+                    class="logout-btn"
+                    onclick="logout()">
+                    Logout
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- Messages -->
+
+        <main
+            id="messages"
+            class="messages">
+
+            <div class="message-row assistant-row">
+
+                <div class="avatar assistant-avatar">
+                    🤖
+                </div>
+
+                <div class="message assistant-message">
+
+                    Hi {{ employee.name }} 👋
+
+                    <br><br>
+
+                    Welcome to Acme Corp's Time-Off Assistant.
+
+                    <br>
+
+                    How can I help you today?
+
+                </div>
+
+            </div>
+
+        </main>
+
+
+        <!-- Input -->
+
+        <footer class="input-area">
+
+            <div class="input-wrapper">
+
+                <textarea
+                    id="messageInput"
+                    rows="1"
+                    placeholder="Ask about your leave, balance or policy..."></textarea>
+
+                <button
+                    id="sendBtn"
+                    onclick="sendMessage()">
+
+                    Send
+
+                </button>
+
+            </div>
+
+            <p class="input-hint">
+                Press Enter to send • Shift + Enter for new line
+            </p>
+
+        </footer>
+
+    </div>
+
+</div>
+
+<script src="/static/chat.js"></script>
+
+</body>
+</html>

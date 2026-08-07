@@ -1,9 +1,13 @@
 from dotenv import load_dotenv
+from pathlib import Path
 import os
 
 from langchain_anthropic import ChatAnthropic
 
-load_dotenv()
+ENV_PATH = Path(__file__).resolve().parent / ".env"
+print("Loading .env from:", ENV_PATH)
+
+load_dotenv(dotenv_path=ENV_PATH)
 
 print("MODEL =", os.getenv("MODEL"))  # Temporary debug line
 

@@ -6,7 +6,7 @@
         "start_date": "2025-08-21",
         "end_date": "2025-08-21",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 2,
@@ -15,7 +15,7 @@
         "start_date": "2025-09-28",
         "end_date": "2025-09-28",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 3,
@@ -24,7 +24,7 @@
         "start_date": "2026-07-31",
         "end_date": "2026-07-31",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 4,
@@ -33,7 +33,7 @@
         "start_date": "2025-09-08",
         "end_date": "2025-09-09",
         "days": 2,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 5,
@@ -42,7 +42,7 @@
         "start_date": "2026-08-16",
         "end_date": "2026-08-16",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 6,
@@ -51,7 +51,7 @@
         "start_date": "2026-08-18",
         "end_date": "2026-08-18",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 7,
@@ -60,7 +60,7 @@
         "start_date": "2025-09-29",
         "end_date": "2025-09-29",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 8,
@@ -69,7 +69,7 @@
         "start_date": "2026-08-02",
         "end_date": "2026-08-02",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 9,
@@ -78,7 +78,7 @@
         "start_date": "2026-10-02",
         "end_date": "2026-10-02",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 10,
@@ -87,7 +87,7 @@
         "start_date": "2026-09-15",
         "end_date": "2026-09-15",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 11,
@@ -96,7 +96,7 @@
         "start_date": "2026-09-11",
         "end_date": "2026-09-13",
         "days": 3,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 12,
@@ -105,7 +105,7 @@
         "start_date": "2026-09-10",
         "end_date": "2026-09-10",
         "days": 1,
-        "status": "Pending"
+        "status": "Cancelled"
     },
     {
         "request_id": 13,
@@ -114,6 +114,42 @@
         "start_date": "2026-12-02",
         "end_date": "2026-12-06",
         "days": 5,
+        "status": "Cancelled"
+    },
+    {
+        "request_id": 14,
+        "employee_id": "EMP002",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-10",
+        "end_date": "2026-08-10",
+        "days": 1,
+        "status": "Pending"
+    },
+    {
+        "request_id": 15,
+        "employee_id": "EMP002",
+        "leave_type": "Sick Leave",
+        "start_date": "2026-08-06",
+        "end_date": "2026-08-06",
+        "days": 1,
+        "status": "Pending"
+    },
+    {
+        "request_id": 16,
+        "employee_id": "EMP002",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-09-15",
+        "end_date": "2026-09-20",
+        "days": 6,
+        "status": "Cancelled"
+    },
+    {
+        "request_id": 17,
+        "employee_id": "EMP001",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-20",
+        "end_date": "2026-08-20",
+        "days": 1,
         "status": "Pending"
     }
 ]

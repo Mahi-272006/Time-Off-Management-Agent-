@@ -36,13 +36,13 @@ def relative_date_resolver_node(state):
     }
 
     patterns = [
-        r"day after tomorrow",
-        r"tomorrow",
-        r"today",
-        r"yesterday",
-        r"next\s+\w+",
-        r"this\s+\w+",
-        r"in\s+\d+\s+days?",
+    r"day after tomorrow",
+    r"tomorrow",
+    r"today",
+    r"yesterday",
+    r"next\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)",
+    r"this\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)",
+    r"in\s+\d+\s+days?",
     ]
 
     new_text = text

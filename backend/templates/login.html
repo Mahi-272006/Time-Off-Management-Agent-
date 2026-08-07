@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Acme Time-Off Assistant</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+<body class="login-body">
+
+    <!-- Animated Background -->
+
+    <div class="bg-circle circle1"></div>
+    <div class="bg-circle circle2"></div>
+    <div class="bg-circle circle3"></div>
+
+    <div class="login-wrapper">
+
+        <div class="login-card">
+
+            <!-- Logo -->
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    🤖
+                </div>
+
+                <h1>Acme Time-Off Assistant</h1>
+
+                <p>
+                    Smart Leave Management powered by AI
+                </p>
+
+            </div>
+
+            <!-- Login Form -->
+
+            <form id="loginForm">
+
+                <div class="input-group">
+
+                    <label>Employee ID</label>
+
+                    <input
+                        id="employeeId"
+                        type="text"
+                        placeholder="Enter Employee ID"
+                        required
+                    >
+
+                </div>
+
+                <div class="input-group">
+
+                    <label>Password</label>
+
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="Enter Password"
+                        required
+                    >
+
+                </div>
+
+                <div
+                    id="error"
+                    class="error-message">
+                </div>
+
+                <button
+                    class="login-btn"
+                    type="submit">
+
+                    Login →
+
+                </button>
+
+            </form>
+
+            <!-- Divider -->
+
+            <div class="divider">
+                <span>Demo Accounts</span>
+            </div>
+
+            <!-- Demo Users -->
+
+            <div class="demo-users">
+
+                <div class="demo-card">
+
+                    <div class="demo-avatar">
+                        👩
+                    </div>
+
+                    <div>
+
+                        <h3>Mahima</h3>
+
+                        <p>
+                            ID :
+                            <code>EMP001</code>
+                        </p>
+
+                        <p>
+                            Password :
+                            <code>mahima123</code>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="demo-card">
+
+                    <div class="demo-avatar">
+                        👨
+                    </div>
+
+                    <div>
+
+                        <h3>Rahul</h3>
+
+                        <p>
+                            ID :
+                            <code>EMP002</code>
+                        </p>
+
+                        <p>
+                            Password :
+                            <code>rahul123</code>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const form = document.getElementById("loginForm");
+
+        form.addEventListener("submit", async (e) => {
+
+            e.preventDefault();
+
+            const employeeId =
+                document.getElementById("employeeId").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const error =
+                document.getElementById("error");
+
+            error.innerHTML = "";
+
+            const response = await fetch("/login", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    employee_id: employeeId,
+
+                    password: password
+
+                })
+
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                window.location.href = "/chat";
+
+            } else {
+
+                error.innerHTML = data.message;
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

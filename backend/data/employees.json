@@ -2,6 +2,7 @@
     {
         "employee_id": "EMP001",
         "name": "Mahima",
+        "password": "mahima123",
         "country": "India",
         "location": "Delhi",
         "department": "AI"
@@ -9,6 +10,7 @@
     {
         "employee_id": "EMP002",
         "name": "Rahul",
+        "password": "rahul123",
         "country": "Germany",
         "location": "Berlin",
         "department": "HR"
