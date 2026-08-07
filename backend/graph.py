@@ -5,7 +5,7 @@ from state.state import PTOState
 
 from nodes.load_context import load_context_node
 from nodes.context_manager import context_manager_node
-from nodes.intent_classifier import intent_classifier_node
+from nodes.workflow_decider import workflow_decider_node
 from nodes.clarify import clarify_node
 from nodes.planner import planner_node
 from nodes.relative_date_resolver import relative_date_resolver_node
@@ -39,7 +39,7 @@ builder = StateGraph(PTOState)
 
 builder.add_node("load_context", load_context_node)
 builder.add_node("context_manager", context_manager_node)
-builder.add_node("intent_classifier", intent_classifier_node)
+builder.add_node("workflow_decider", workflow_decider_node)
 builder.add_node("clarify", clarify_node)
 builder.add_node("planner", planner_node)
 builder.add_node("tools", ToolNode(tools))
@@ -76,12 +76,12 @@ builder.add_edge(
 
 builder.add_edge(
     "relative_date_resolver",
-    "intent_classifier",
+    "workflow_decider",
 )
 
 
 builder.add_conditional_edges(
-    "intent_classifier",
+    "workflow_decider",
     route_after_intent,
     {
         "clarify": "clarify",
