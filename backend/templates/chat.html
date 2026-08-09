@@ -11,102 +11,99 @@
 
 <body>
 
-<div class="app">
+    <div class="app">
 
-    <div class="chat-container">
+        <div class="chat-container">
 
-        <!-- Header -->
+            <!-- Header -->
 
-        <header class="chat-header">
+            <header class="chat-header">
 
-            <div>
-                <h2>🤖 Acme Time-Off Assistant</h2>
+                <div>
+                    <h2>🤖 Acme Time-Off Assistant</h2>
 
-                <div class="status">
-                    Online
-                </div>
-            </div>
-
-            <div>
-
-                <span class="employee-name">
-                    {{ employee.name }}
-                </span>
-
-                <button
-                    class="logout-btn"
-                    onclick="logout()">
-                    Logout
-                </button>
-
-            </div>
-
-        </header>
-
-
-        <!-- Messages -->
-
-        <main
-            id="messages"
-            class="messages">
-
-            <div class="message-row assistant-row">
-
-                <div class="avatar assistant-avatar">
-                    🤖
+                    <div class="status">
+                        Online
+                    </div>
                 </div>
 
-                <div class="message assistant-message">
+                <div>
 
-                    Hi {{ employee.name }} 👋
+                    <span class="employee-name">
+                        {{ employee.name }}
+                    </span>
 
-                    <br><br>
+                    <span class="user-role">
+                        {{ employee.role | title }}
+                    </span>
 
-                    Welcome to Acme Corp's Time-Off Assistant.
-
-                    <br>
-
-                    How can I help you today?
+                    <button class="logout-btn" onclick="logout()">
+                        Logout
+                    </button>
 
                 </div>
 
-            </div>
-
-        </main>
+            </header>
 
 
-        <!-- Input -->
+            <!-- Messages -->
 
-        <footer class="input-area">
+            <main id="messages" class="messages">
 
-            <div class="input-wrapper">
+                <div class="message-row assistant-row">
 
-                <textarea
-                    id="messageInput"
-                    rows="1"
-                    placeholder="Ask about your leave, balance or policy..."></textarea>
+                    <div class="avatar assistant-avatar">
+                        🤖
+                    </div>
 
-                <button
-                    id="sendBtn"
-                    onclick="sendMessage()">
+                    <div class="message assistant-message">
 
-                    Send
+                        Hi {{ employee.name }} 👋
 
-                </button>
+                        <br><br>
 
-            </div>
+                        Welcome to Acme Corp's Time-Off Assistant.
 
-            <p class="input-hint">
-                Press Enter to send • Shift + Enter for new line
-            </p>
+                        <br>
 
-        </footer>
+                        How can I help you today?
+
+                    </div>
+
+                </div>
+
+            </main>
+
+
+            <!-- Input -->
+
+            <footer class="input-area">
+
+                <div class="input-wrapper">
+
+                    <textarea id="messageInput" rows="1"
+                        placeholder="Ask about your leave, balance or policy..."></textarea>
+
+                    <button id="sendBtn" onclick="sendMessage()">
+
+                        Send
+
+                    </button>
+
+                </div>
+
+                <p class="input-hint">
+                    Press Enter to send • Shift + Enter for new line
+                </p>
+
+            </footer>
+
+        </div>
 
     </div>
 
-</div>
-
-<script src="/static/chat.js"></script>
+    <script src="/static/chat.js"></script>
 
 </body>
+
 </html>

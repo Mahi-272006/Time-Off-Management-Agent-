@@ -1,18 +1,28 @@
 [
-    {
-        "employee_id": "EMP001",
-        "name": "Mahima",
-        "password": "mahima123",
-        "country": "India",
-        "location": "Delhi",
-        "department": "AI"
-    },
-    {
-        "employee_id": "EMP002",
-        "name": "Rahul",
-        "password": "rahul123",
-        "country": "Germany",
-        "location": "Berlin",
-        "department": "HR"
-    }
+  {
+    "employee_id": "EMP001",
+    "password": "mahima123",
+    "name": "Mahima",
+    "country": "India",
+    "location":"Delhi",
+    "department": "AI",
+    "role": "employee"
+  },
+  {
+    "employee_id": "EMP002",
+    "password": "rahul123",
+    "name": "Rahul",
+    "country": "Germany",
+    "location":"Berlin",
+    "department": "AI",
+    "role": "employee"
+  },
+  {
+    "employee_id": "MGR001",
+    "password": "manager123",
+    "name": "Arjun",
+    "country": "India",
+    "department": "AI",
+    "role": "manager"
+  }
 ]

@@ -53,7 +53,52 @@ print("Type 'exit' to quit.")
 # test_cases = [
 #     "Show my leave history and explain sick leave policy"
 # ]
+'''test_cases = [
+    # 1. Greeting
+    "Hi",
 
+    # 2. Balance
+    "Show my leave balance",
+
+    # 3. Leave history
+    "Show my leave history",
+
+    # 4. Policy
+    "What is the annual leave policy?",
+
+    # 5. New leave - complete
+    "Take annual leave on 20 August 2026",
+
+    # 6. Missing leave type
+    "Take leave on 21 August 2026",
+
+    # 7. Missing date
+    "Take sick leave",
+
+    # 8. Relative date
+    "Take annual leave tomorrow",
+
+    # 9. Synonym
+    "Take PTO on 25 August 2026",
+
+    # 10. Multi-day leave
+    "Take annual leave from 1 September 2026 to 3 September 2026",
+
+    # 11. Multi-intent
+    "Show my balance and take sick leave on 5 September 2026",
+
+    # 12. Policy + history
+    "Show my leave history and explain the sick leave policy",
+
+    # 13. Invalid date
+    "Take annual leave on 31 February 2026",
+
+    # 14. Modify existing request
+    "Actually move my leave request to 28 August 2026",
+
+    # 15. Cancel existing request
+    "Cancel my latest leave request"
+]'''
 # Interactive mode
 test_cases = None
 

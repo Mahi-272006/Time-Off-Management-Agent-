@@ -4,16 +4,30 @@ from datetime import datetime
 from llm import llm
 from prompts.planner_prompt import PLANNER_PROMPT
 from utils.context import prepare_messages
-from tools.balance_tool import get_balance
-from tools.leave_tool import (
+from tools.employee.balance_tool import get_balance
+from tools.employee.leave_tool import (
     list_leave_requests,
     validate_leave_request,
     submit_leave_request,
     modify_leave_request,
-    cancel_leave_request,
-)
-from tools.policy_tool import search_policy
+    cancel_leave_request
 
+)
+from tools.employee.policy_tool import search_policy
+from tools.employee.policy_tool import search_policy
+
+from tools.manager.team_leave_tools import (
+    get_pending_team_leave_requests,
+)
+
+from tools.manager.approval_tools import (
+    approve_leave_request,
+    reject_leave_request,
+)
+
+from tools.manager.conflict_tool import (
+    detect_team_conflicts,
+)
 
 # Bind tools to Claude
 llm_with_tools = llm.bind_tools(
@@ -24,7 +38,11 @@ llm_with_tools = llm.bind_tools(
         submit_leave_request,
         modify_leave_request,
         search_policy,
-        cancel_leave_request
+        cancel_leave_request,
+        get_pending_team_leave_requests,
+        approve_leave_request,
+        reject_leave_request,
+        detect_team_conflicts
     ]
 )
 

@@ -3,7 +3,7 @@ from datetime import datetime
 from langchain_core.tools import tool
 from utils.paths import DATA_DIR
 from langchain_core.tools import tool
-from tools.validation_leave_request_logic import validate_leave_request_logic,calculate_days
+from tools.employee.validation_leave_request_logic import validate_leave_request_logic,calculate_days
 
 @tool
 def list_leave_requests(employee_id: str):
@@ -242,3 +242,4 @@ def cancel_leave_request(request_id: int):
         "request_id": request_id,
         "status": "Cancelled"
     }
+

@@ -137,9 +137,12 @@ async def ask(req: ChatRequest, request: Request):
 
         "employee_id": employee["employee_id"],
 
-        "employee": {}
+        "role": employee.get("role", "employee"),
+
+        "employee": employee
 
     }
+    print("GRAPH STATE ROLE:", state["role"])
 
     result = graph.invoke(
     state,

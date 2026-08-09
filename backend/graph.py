@@ -1,6 +1,7 @@
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import ToolNode, tools_condition
 from langgraph.checkpoint.memory import MemorySaver
+
 from state.state import PTOState
 
 from nodes.load_context import load_context_node
@@ -9,16 +10,36 @@ from nodes.workflow_decider import workflow_decider_node
 from nodes.clarify import clarify_node
 from nodes.planner import planner_node
 from nodes.relative_date_resolver import relative_date_resolver_node
-from tools.balance_tool import get_balance
-from tools.leave_tool import (
+
+# =========================
+# Employee Tools
+# =========================
+
+from tools.employee.balance_tool import get_balance
+
+from tools.employee.leave_tool import (
     list_leave_requests,
     validate_leave_request,
     submit_leave_request,
     modify_leave_request,
-    cancel_leave_request
+    cancel_leave_request,
 )
-from tools.policy_tool import search_policy
 
+from tools.employee.policy_tool import search_policy
+
+
+# =========================
+# Manager Tools
+# =========================
+from tools.manager.conflict_tool import detect_team_conflicts
+from tools.manager.team_leave_tools import (
+    get_pending_team_leave_requests
+)
+
+from tools.manager.approval_tools import (
+    approve_leave_request,
+    reject_leave_request
+)
 
 tools = [
     get_balance,
@@ -27,7 +48,11 @@ tools = [
     submit_leave_request,
     modify_leave_request, 
     cancel_leave_request, 
-    search_policy
+    search_policy,
+    get_pending_team_leave_requests,
+    approve_leave_request,
+    reject_leave_request,
+    detect_team_conflicts
 ]
 
 

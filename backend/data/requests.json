@@ -123,7 +123,7 @@
         "start_date": "2026-08-10",
         "end_date": "2026-08-10",
         "days": 1,
-        "status": "Pending"
+        "status": "Approved"
     },
     {
         "request_id": 15,
@@ -132,7 +132,7 @@
         "start_date": "2026-08-06",
         "end_date": "2026-08-06",
         "days": 1,
-        "status": "Pending"
+        "status": "Rejected"
     },
     {
         "request_id": 16,
@@ -150,6 +150,87 @@
         "start_date": "2026-08-20",
         "end_date": "2026-08-20",
         "days": 1,
+        "status": "Approved"
+    },
+    {
+        "request_id": 18,
+        "employee_id": "EMP002",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-20",
+        "end_date": "2026-08-20",
+        "days": 1,
+        "status": "Cancelled"
+    },
+    {
+        "request_id": 19,
+        "employee_id": "EMP002",
+        "leave_type": "Sick Leave",
+        "start_date": "2026-08-21",
+        "end_date": "2026-08-21",
+        "days": 1,
+        "status": "Cancelled"
+    },
+    {
+        "request_id": 20,
+        "employee_id": "EMP002",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-25",
+        "end_date": "2026-08-25",
+        "days": 1,
+        "status": "Approved"
+    },
+    {
+        "request_id": 21,
+        "employee_id": "EMP002",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-09-01",
+        "end_date": "2026-09-03",
+        "days": 3,
+        "status": "Cancelled"
+    },
+    {
+        "request_id": 22,
+        "employee_id": "EMP001",
+        "leave_type": "Sick Leave",
+        "start_date": "2026-08-18",
+        "end_date": "2026-08-18",
+        "days": 1,
+        "status": "Pending"
+    },
+    {
+        "request_id": 23,
+        "employee_id": "EMP001",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-10",
+        "end_date": "2026-08-10",
+        "days": 1,
+        "status": "Approved"
+    },
+    {
+        "request_id": 24,
+        "employee_id": "EMP001",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-08-12",
+        "end_date": "2026-08-15",
+        "days": 4,
+        "status": "Pending"
+    },
+    {
+        "request_id": 25,
+        "employee_id": "EMP001",
+        "leave_type": "Sick Leave",
+        "start_date": "2026-08-27",
+        "end_date": "2026-08-27",
+        "days": 1,
+        "status": "Pending"
+    },
+    {
+        "request_id": 26,
+        "employee_id": "EMP001",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-09-21",
+        "end_date": "2026-09-27",
+        "days": 7,
         "status": "Pending"
     }
 ]

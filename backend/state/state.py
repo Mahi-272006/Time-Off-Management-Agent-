@@ -4,13 +4,17 @@ from langchain_core.messages import BaseMessage
 
 
 class PTOState(TypedDict):
+
     # Conversation history
     messages: Annotated[list[BaseMessage], add_messages]
 
     # Current employee
     employee_id: str
 
-    # Employee details loaded from tool
+    # Employee role
+    role: str
+
+    # Employee details
     employee: dict[str, Any]
 
     # Tool outputs
@@ -29,7 +33,8 @@ class PTOState(TypedDict):
     # Conversation memory
     summary: str
 
+    # Intent
     intent: str
 
+    # Workflow decision
     can_proceed: bool
-

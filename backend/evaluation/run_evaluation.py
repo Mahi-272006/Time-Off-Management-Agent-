@@ -47,7 +47,7 @@ for test in golden_dataset:
         ],
 
         # Logged-in employee
-        "employee_id": "EMP002",
+        "employee_id": "EMP001",
 
         "employee": None,
 
@@ -55,7 +55,14 @@ for test in golden_dataset:
 
     try:
 
-        final_state = graph.invoke(state)
+        final_state = graph.invoke(
+        state,
+        config={
+            "configurable": {
+            "thread_id": f"employee_test_{test['id']}"
+            }
+        }
+        )
 
         response = final_state["messages"][-1].content
 
