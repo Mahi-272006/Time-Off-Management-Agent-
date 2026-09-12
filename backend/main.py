@@ -24,7 +24,7 @@ app = FastAPI(title="Time-Off Assistant")
 # Session
 app.add_middleware(
     SessionMiddleware,
-    secret_key="timeoff_secret_key",  
+    secret_key="timeoff_secret_key",
 )
 
 
@@ -46,6 +46,37 @@ class LoginRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+
+
+# --------------------------------------------------
+# Per-employee conversation state
+# --------------------------------------------------
+# Instead of one shared dict for every visitor, each employee_id gets
+# its own separate state so concurrent users don't interfere with
+# each other's conversations or leave requests.
+
+conversation_states: dict[str, dict] = {}
+
+
+def get_conversation_state(employee: dict) -> dict:
+    employee_id = employee["employee_id"]
+
+    if employee_id not in conversation_states:
+        conversation_states[employee_id] = {
+            "messages": [],
+            "employee_id": employee_id,
+            "employee": employee,
+            "tool_results": {},
+            "retrieved_docs": [],
+            "final_response": "",
+            "needs_clarification": False,
+            "clarification_question": "",
+            "summary": "",
+            "intent": "",
+            "can_proceed": False,
+        }
+
+    return conversation_states[employee_id]
 
 
 # Login Page
@@ -113,27 +144,29 @@ async def ask(req: ChatRequest, request: Request):
             "response": "Please login first."
         }
 
-    state = {
+    # Look up (or create) this employee's own conversation state
+    state = get_conversation_state(employee)
 
-        "messages": [
-            HumanMessage(content=req.message)
-        ],
-        "employee_id": employee["employee_id"],
-        "role": employee.get("role", "employee"),
-        "employee": employee
-
-    }
+    # Add the new user message to their own message history
+    state["messages"].append(
+        HumanMessage(content=req.message)
+    )
+    state["role"] = employee.get("role", "employee")
 
     print("GRAPH STATE ROLE:", state["role"])
 
     result = graph.invoke(
-    state,
-    config={
-        "configurable": {
-            "thread_id": employee["employee_id"]  #tells langgraph which state the convo belong
+        state,
+        config={
+            "configurable": {
+                "thread_id": employee["employee_id"]  #tells langgraph which state the convo belong
+            }
         }
-    }
     )
+
+    # Persist the updated state back into this employee's slot
+    conversation_states[employee["employee_id"]] = result
+
     print("\n===== STORED MESSAGES =====")
     for msg in result["messages"]:
         print(type(msg).__name__, ":", msg.content)
@@ -162,6 +195,7 @@ async def ask(req: ChatRequest, request: Request):
     return {
         "response": final_response
     }
+
 
 # Logout
 @app.get("/logout")
