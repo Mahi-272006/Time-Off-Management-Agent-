@@ -118,9 +118,15 @@ def chat(request: ChatRequest):
 
         last_message = messages[-1]
 
+
+        print(f"DEBUG: type(response_content)={type(response_content).__name__}, repr={repr(response_content)}")
+        print(f"DEBUG: last_message type={type(last_message).__name__}, content={repr(last_message.content)}")
+        print(f"DEBUG: messages count={len(messages)}, last index={len(messages)-1}")
+        print(f"DEBUG: result keys={list(result.keys())}")
         response_content = last_message.content
 
-        # Claude/LangChain content can occasionally be structured
+        # LLM/LangChain content can occasionally be structured
+
         # rather than a plain string.
         if isinstance(response_content, str):
             final_response = response_content

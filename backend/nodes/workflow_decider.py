@@ -17,7 +17,8 @@ def workflow_decider_node(state):
 
     content = response.content
 
-    # Claude may return either a string or a list of content blocks
+    # The LLM may return either a string or a list of content blocks
+
     if isinstance(content, str):
         answer = content.strip().upper()
 

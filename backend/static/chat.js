@@ -94,7 +94,7 @@ async function sendMessage() {
 
     try {
 
-        const response = await fetch("/ask", {
+        const response = await fetch("/chat", {
 
             method: "POST",
 
@@ -108,7 +108,13 @@ async function sendMessage() {
 
         });
 
-        const data = await response.json();
+        console.log("STATUS:", response.status);
+
+        const rawText = await response.text();
+
+        console.log("RAW BODY:", rawText);
+
+        const data = JSON.parse(rawText);
 
         removeTyping();
 

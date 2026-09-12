@@ -141,10 +141,27 @@ async def ask(req: ChatRequest, request: Request):
 
     answer = result["messages"][-1].content
 
-    return {
-        "response": answer
-    }
+    # Gemini (and sometimes Anthropic) can return content as a list of
+    # structured blocks instead of a plain string. Flatten it here so the
+    # frontend always receives a plain string.
+    if isinstance(answer, str):
+        final_response = answer
 
+    elif isinstance(answer, list):
+        text_parts = []
+        for block in answer:
+            if isinstance(block, dict) and block.get("type") == "text":
+                text_parts.append(block.get("text", ""))
+        final_response = "\n".join(text_parts).strip()
+
+    else:
+        final_response = str(answer)
+
+    print(f"DEBUG main.py: type(answer)={type(answer).__name__}, final_response={final_response!r}")
+
+    return {
+        "response": final_response
+    }
 
 # Logout
 @app.get("/logout")

@@ -23,7 +23,7 @@ from tools.manager.approval_tools import (
 )
 from tools.manager.conflict_tool import detect_team_conflicts
 
-# Bind tools to Claude
+# Bind tools to the LLM
 llm_with_tools = llm.bind_tools(
     [
         get_balance,

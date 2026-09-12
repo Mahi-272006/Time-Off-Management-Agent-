@@ -277,5 +277,14 @@
         "end_date": "2026-08-28",
         "days": 1,
         "status": "Cancelled"
+    },
+    {
+        "request_id": 32,
+        "employee_id": "EMP001",
+        "leave_type": "Annual Leave",
+        "start_date": "2026-11-09",
+        "end_date": "2026-11-09",
+        "days": 1,
+        "status": "Pending"
     }
 ]
