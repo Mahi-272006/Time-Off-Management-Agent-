@@ -10,7 +10,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
 
+#to validate the structure of incoming API requests
 from pydantic import BaseModel
+
 from langchain_core.messages import HumanMessage
 
 from backend.auth import authenticate
@@ -18,19 +20,15 @@ from backend.graph import graph
 
 app = FastAPI(title="Time-Off Assistant")
 
-# -------------------------------
-# Session
-# -------------------------------
 
+# Session
 app.add_middleware(
     SessionMiddleware,
-    secret_key="timeoff_secret_key",
+    secret_key="timeoff_secret_key",  
 )
 
-# -------------------------------
-# Static & Templates
-# -------------------------------
 
+# Static & Templates
 app.mount(
     "/static",
     StaticFiles(directory=BACKEND_DIR / "static"),
@@ -41,26 +39,18 @@ templates = Jinja2Templates(
     directory=BACKEND_DIR / "templates"
 )
 
-# -------------------------------
 # Models
-# -------------------------------
-
 class LoginRequest(BaseModel):
     employee_id: str
     password: str
-
 
 class ChatRequest(BaseModel):
     message: str
 
 
-# -------------------------------
 # Login Page
-# -------------------------------
-
 @app.get("/")
 async def login_page(request: Request):
-
     return templates.TemplateResponse(
         "login.html",
         {
@@ -69,13 +59,11 @@ async def login_page(request: Request):
     )
 
 
-# -------------------------------
 # Login API
-# -------------------------------
-
 @app.post("/login")
 async def login(req: LoginRequest, request: Request):
 
+    #calls auth.py
     employee = authenticate(
         req.employee_id,
         req.password
@@ -87,6 +75,7 @@ async def login(req: LoginRequest, request: Request):
             "message": "Invalid Employee ID or Password"
         }
 
+    #stores authenticated employee in the session
     request.session["employee"] = employee
 
     return {
@@ -94,13 +83,11 @@ async def login(req: LoginRequest, request: Request):
     }
 
 
-# -------------------------------
 # Chat Page
-# -------------------------------
-
 @app.get("/chat")
 async def chat_page(request: Request):
 
+    #checks whether the user is logged in
     employee = request.session.get("employee")
 
     if employee is None:
@@ -115,10 +102,7 @@ async def chat_page(request: Request):
     )
 
 
-# -------------------------------
 # Chat API
-# -------------------------------
-
 @app.post("/ask")
 async def ask(req: ChatRequest, request: Request):
 
@@ -134,21 +118,19 @@ async def ask(req: ChatRequest, request: Request):
         "messages": [
             HumanMessage(content=req.message)
         ],
-
         "employee_id": employee["employee_id"],
-
         "role": employee.get("role", "employee"),
-
         "employee": employee
 
     }
+
     print("GRAPH STATE ROLE:", state["role"])
 
     result = graph.invoke(
     state,
     config={
         "configurable": {
-            "thread_id": employee["employee_id"]
+            "thread_id": employee["employee_id"]  #tells langgraph which state the convo belong
         }
     }
     )
@@ -164,10 +146,7 @@ async def ask(req: ChatRequest, request: Request):
     }
 
 
-# -------------------------------
 # Logout
-# -------------------------------
-
 @app.get("/logout")
 async def logout(request: Request):
 

@@ -3,9 +3,7 @@
 ## Global
 
 - Annual leave is available to all full-time employees.
-- Leave requests should be submitted at least 7 calendar days in advance whenever possible.
 - All leave requests require manager approval before they are confirmed.
-- Leave is subject to business requirements and team availability.
 - Annual leave can only be applied for scheduled working days.
 - Weekends (Saturday and Sunday) and company-recognized public holidays are not deducted from an employee's annual leave balance.
 - If a leave request spans weekends or public holidays, only the applicable working days are counted as annual leave.

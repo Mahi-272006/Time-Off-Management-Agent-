@@ -1,14 +1,11 @@
 import json
 from datetime import datetime, timedelta
-
 import holidays
-
 from utils.paths import DATA_DIR
 
 
-# ======================================================
 # Helper Functions
-# ======================================================
+
 def get_date_range(start_date: str, end_date: str):
     """
     Returns every date between start_date and end_date (inclusive).
@@ -27,14 +24,20 @@ def get_date_range(start_date: str, end_date: str):
 
     return dates
 
+
 def calculate_days(start_date: str, end_date: str):
+    """
+    Calculates how many calendar days are requested.
+    """
     start = datetime.strptime(start_date, "%Y-%m-%d")
     end = datetime.strptime(end_date, "%Y-%m-%d")
     return (end - start).days + 1
 
 
 def get_employee_country(employee_id):
-
+    """
+    holiday validation needs to know which country's public holidays apply to that employee.
+    """
     try:
         with open(DATA_DIR / "employees.json", "r") as f:
             employees = json.load(f)
@@ -122,7 +125,9 @@ def check_holiday(date: str, country: str):
 
 
 def check_balance(employee_id, leave_type, required_days):
-
+    """
+    checks enough balance or not 
+    """
     with open(DATA_DIR / "balances.json", "r") as f:
         balances = json.load(f)
 
@@ -140,7 +145,9 @@ def check_balance(employee_id, leave_type, required_days):
 
 
 def check_overlap(employee_id, start_date, end_date, ignore_request_id):
-
+    """
+    checks whether the employee already has another leave request covering the requested dates
+    """
     with open(DATA_DIR / "requests.json", "r") as f:
         requests = json.load(f)
 
@@ -175,10 +182,7 @@ def check_blackout(start_date, end_date):
     )
 
 
-# ======================================================
 # Individual Validators
-# ======================================================
-
 def validate_calendar(start_date):
 
     calendar = check_calendar(start_date)
@@ -282,10 +286,7 @@ def validate_blackout(start_date, end_date):
     return {"valid": True}
 
 
-# ======================================================
 # Main Validation Pipeline
-# ======================================================
-
 def validate_leave_request_logic(
     employee_id,
     leave_type,

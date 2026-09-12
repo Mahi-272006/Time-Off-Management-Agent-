@@ -4,6 +4,7 @@ from datetime import datetime
 from llm import llm
 from prompts.planner_prompt import PLANNER_PROMPT
 from utils.context import prepare_messages
+
 from tools.employee.balance_tool import get_balance
 from tools.employee.leave_tool import (
     list_leave_requests,
@@ -14,20 +15,13 @@ from tools.employee.leave_tool import (
 
 )
 from tools.employee.policy_tool import search_policy
-from tools.employee.policy_tool import search_policy
 
-from tools.manager.team_leave_tools import (
-    get_pending_team_leave_requests,
-)
-
+from tools.manager.team_leave_tools import get_pending_team_leave_requests
 from tools.manager.approval_tools import (
     approve_leave_request,
     reject_leave_request,
 )
-
-from tools.manager.conflict_tool import (
-    detect_team_conflicts,
-)
+from tools.manager.conflict_tool import detect_team_conflicts
 
 # Bind tools to Claude
 llm_with_tools = llm.bind_tools(
@@ -96,8 +90,6 @@ Current Weekday: {current_weekday}
         print(msg.content)
 
     print("=" * 100)
-    response = llm_with_tools.invoke(prompt)
-
     response = llm_with_tools.invoke(prompt)
 
     print("\n========================")

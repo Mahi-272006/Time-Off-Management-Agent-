@@ -45,6 +45,6 @@ def workflow_decider_node(state):
     can_proceed = "PROCEED" in answer
 
     return {
-        "intent": answer,
+        "workflow_decision": answer,
         "can_proceed": can_proceed,
     }

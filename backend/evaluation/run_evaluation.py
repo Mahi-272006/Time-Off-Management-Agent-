@@ -12,7 +12,6 @@ sys.path.insert(0, str(BACKEND_DIR))
 from graph import graph
 from langchain_core.messages import HumanMessage
 
-
 # ---------------------------------------------------
 # Load Golden Dataset
 # ---------------------------------------------------
@@ -25,9 +24,7 @@ dataset_path = (
 with open(dataset_path, "r", encoding="utf-8") as f:
     golden_dataset = json.load(f)
 
-
 results = []
-
 
 # ---------------------------------------------------
 # Run Every Test Case
@@ -41,7 +38,6 @@ for test in golden_dataset:
     print("=" * 70)
 
     state = {
-
         "messages": [
             HumanMessage(content=test["query"])
         ],
@@ -50,18 +46,17 @@ for test in golden_dataset:
         "employee_id": "EMP001",
 
         "employee": None,
-
     }
 
     try:
 
         final_state = graph.invoke(
-        state,
-        config={
-            "configurable": {
-            "thread_id": f"employee_test_{test['id']}"
+            state,
+            config={
+                "configurable": {
+                    "thread_id": f"employee_test_{test['id']}"
+                }
             }
-        }
         )
 
         response = final_state["messages"][-1].content
@@ -72,8 +67,15 @@ for test in golden_dataset:
 
         tools_used = []
 
+        # ---------------------------------------
+        # Capture actual tool outputs
+        # ---------------------------------------
+
+        tool_outputs = []
+
         for message in final_state["messages"]:
 
+            # Tool calls made by the LLM
             if hasattr(message, "tool_calls"):
 
                 if message.tool_calls:
@@ -82,11 +84,28 @@ for test in golden_dataset:
 
                         tools_used.append(tool["name"])
 
+            # Tool results
+            #
+            # ToolMessage normally has:
+            # - name
+            # - content
+            # - tool_call_id
+            #
+            if hasattr(message, "tool_call_id"):
+
+                tool_outputs.append({
+                    "tool": getattr(message, "name", None),
+                    "tool_call_id": message.tool_call_id,
+                    "output": message.content,
+                })
+
     except Exception as e:
 
         response = f"ERROR: {str(e)}"
 
         tools_used = []
+
+        tool_outputs = []
 
     # ---------------------------------------
     # Save Result
@@ -106,8 +125,9 @@ for test in golden_dataset:
 
         "tools_used": tools_used,
 
-    })
+        "tool_outputs": tool_outputs,
 
+    })
 
 # ---------------------------------------------------
 # Save Results
@@ -133,7 +153,6 @@ with open(output, "w", encoding="utf-8") as f:
         indent=4,
         ensure_ascii=False,
     )
-
 
 print("\n")
 print("=" * 70)

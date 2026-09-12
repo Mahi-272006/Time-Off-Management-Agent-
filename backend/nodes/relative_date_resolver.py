@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime  
 import re
 
 import dateparser
@@ -23,6 +23,7 @@ def relative_date_resolver_node(state):
     if not messages:
         return {}
 
+    #gets latest message
     last = messages[-1]
 
     if not isinstance(last, HumanMessage):
@@ -31,8 +32,8 @@ def relative_date_resolver_node(state):
     text = last.content
 
     settings = {
-        "RELATIVE_BASE": datetime.now(),
-        "PREFER_DATES_FROM": "future",
+        "RELATIVE_BASE": datetime.now(),  #use curr date time as reference
+        "PREFER_DATES_FROM": "future",    #when the phrase could refer to different dates, prefer a future occurrence
     }
 
     patterns = [

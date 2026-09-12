@@ -1,7 +1,7 @@
 import json
 from utils.paths import DATA_DIR
 
-def load_context_node(state):
+def load_emp_info_node(state):
 
     try:
         with open(DATA_DIR / "employees.json", "r") as f:

@@ -78,9 +78,6 @@ def validate_leave_request(
         ignore_request_id=ignore_request_id,
     )
 
-# ---------------------------------------------------
-# Tool 3
-# ---------------------------------------------------
 
 @tool
 def submit_leave_request(
@@ -133,9 +130,6 @@ def submit_leave_request(
         "status": "Pending"
     }
 
-# ---------------------------------------------------
-# Tool 4
-# ---------------------------------------------------
 
 @tool
 def modify_leave_request(
